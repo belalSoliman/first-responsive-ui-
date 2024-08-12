@@ -2,6 +2,7 @@ import 'package:first_responsive/widget/dashbord.dart';
 import 'package:flutter/material.dart';
 
 import 'widget/container.dart';
+import 'widget/list_tablets.dart';
 import 'widget/list_view_b.dart';
 
 class FlutterWindow extends StatefulWidget {
@@ -32,14 +33,32 @@ class _FlutterWindowState extends State<FlutterWindow> {
             ),
           ),
         ),
-        body: const CustomScrollView(
+        body: CustomScrollView(
           slivers: <Widget>[
             SliverToBoxAdapter(
               child: SizedBox(
                 height: 16,
               ),
             ),
-            ContainerView(),
+            SliverToBoxAdapter(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth <= 600) {
+                    return SizedBox(
+                      height:
+                          400, // Adjust height according to your layout needs
+                      child: CustomScrollView(
+                        slivers: <Widget>[
+                          ContainerView(), // Directly use ContainerView which returns a SliverGrid
+                        ],
+                      ),
+                    );
+                  } else {
+                    return ListTablets(); // This already returns a RenderBox-compatible widget
+                  }
+                },
+              ),
+            ),
             ListVVs(),
           ],
         ),
